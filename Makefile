@@ -1,2 +1,2 @@
 main: src/main.c
-	clang src/main.c -o build/main
+	clang src/main.c -o build/main -lncurses
