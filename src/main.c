@@ -3,7 +3,7 @@
 #include <curses.h>
 
 // this should be a seperate file but its too late now!
-const char *digits[11][5] {
+const char *digits[11][5] = {
   {
     " ### ",
     "#   #",
@@ -96,9 +96,26 @@ int main(int argc, char *argv[]) {
   ch = getch();
   while (ch == ERR) {
     // format and print time
-    strftime(buff, sizeof(buff), "%c", fmttime);
-    printf("The current time is: %s\n", buff);
-    
+    // strftime(buff, sizeof(buff), "%c", fmttime);
+    // printf("The current time is: %s\n", buff);
+   
+    maxlines = LINES - 1;
+    maxcols = COLS - 1;
+
+    if (maxcols < 20 || maxlines < 20) {
+      mvaddstr(1, 1, "terminal is too small!");
+      mvaddstr(1, 2, "must be at least 20x20");
+    } else {
+      const char **letter = digits[0];
+      for (int i = 0; i < 5; i++) {
+        mvaddstr(1, i + 1, letter[i]);
+        // printf("%d\n", i);
+        // printf("%s\n", letter[i]);
+      }
+    }
+
+    refresh();
+
     ch = getch();
   }
 
