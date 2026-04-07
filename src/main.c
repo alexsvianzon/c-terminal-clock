@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <curses.h>
 
@@ -80,6 +82,7 @@ int main(int argc, char *argv[]) {
   // time.h vars
   char buff_full[80]; // NEVER name the character buffer "time" -- been there before
   char buff_time[10];
+  char time_last[10];
   time_t rawtime;
   struct tm *fmttime;
 
@@ -98,26 +101,29 @@ int main(int argc, char *argv[]) {
   while (ch != 113) {
     maxlines = LINES - 1;
     maxcols = COLS - 1;
+    
+    if (strcmp(buff_time, time_last) != 0) {
+      if (maxcols < 20 || maxlines < 20) {
+        mvaddstr(1, 1, "terminal is too small!");
+        mvaddstr(1, 2, "must be at least 20x20");
+      } else {
+        time(&rawtime);
+        fmttime = localtime(&rawtime);
+        strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
 
-    if (maxcols < 20 || maxlines < 20) {
-      mvaddstr(1, 1, "terminal is too small!");
-      mvaddstr(1, 2, "must be at least 20x20");
-    } else {
-      time(&rawtime);
-      fmttime = localtime(&rawtime);
-      strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
+        for (int i = 0; buff_time[i]; i++) {
+          int d = (buff_time[i] >= '0' && buff_time[i] <= '9') ? buff_time[i] - '0' : 10;
+          const char **digit = digits[d];
 
-      for (int i = 0; buff_time[i]; i++) {
-        int d = (buff_time[i] >= '0' && buff_time[i] <= '9') ? buff_time[i] - '0' : 10;
-        const char **digit = digits[d];
-
-        for (int j = 0; j < 5; j++) {
-          mvaddstr(j + 1, i * 6 + 1, digit[j]);
+          for (int j = 0; j < 5; j++) {
+            mvaddstr(j + 1, i * 6 + 1, digit[j]);
+          }
         }
+
+        strcpy(time_last, buff_time);
+        refresh();
       }
     }
-
-    refresh();
 
     ch = getch();
   }
