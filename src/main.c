@@ -78,7 +78,8 @@ int main(int argc, char *argv[]) {
 
   // init some vars
   // time.h vars
-  char buff[80]; // NEVER name the character buffer "time" -- been there before
+  char buff_full[80]; // NEVER name the character buffer "time" -- been there before
+  char buff_time[10]
   time_t rawtime;
   struct tm *fmttime;
 
@@ -96,8 +97,7 @@ int main(int argc, char *argv[]) {
   ch = getch();
   while (ch == ERR) {
     // format and print time
-    // strftime(buff, sizeof(buff), "%c", fmttime);
-    // printf("The current time is: %s\n", buff);
+    strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
    
     maxlines = LINES - 1;
     maxcols = COLS - 1;
@@ -106,11 +106,16 @@ int main(int argc, char *argv[]) {
       mvaddstr(1, 1, "terminal is too small!");
       mvaddstr(1, 2, "must be at least 20x20");
     } else {
-      const char **letter = digits[0];
-      for (int i = 0; i < 5; i++) {
-        mvaddstr(i + 1, 1, letter[i]);
-        // printf("%d\n", i);
-        // printf("%s\n", letter[i]);
+      for (int i = 0; i < sizeof(buff_time), i++) {
+        if (scanf("%d", &buff_time[i]) == 1) {
+          const char **digit = digits[buff_time[i]];
+        } else {
+          const char **digit = digits[10];
+        }
+
+        for (int j = 0; j < 5; j++) {
+          mvaddstr(i * 5 + i + 1, 1, digit[j];
+        }
       }
     }
 
