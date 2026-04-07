@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
     } else {
       const char **letter = digits[0];
       for (int i = 0; i < 5; i++) {
-        mvaddstr(1, i + 1, letter[i]);
+        mvaddstr(i + 1, 1, letter[i]);
         // printf("%d\n", i);
         // printf("%s\n", letter[i]);
       }
