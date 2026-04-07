@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   nodelay(stdscr, TRUE);
   
   ch = getch();
-  while (ch == ERR) {
+  while (ch != 113) {
     maxlines = LINES - 1;
     maxcols = COLS - 1;
 
