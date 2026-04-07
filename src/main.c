@@ -25,7 +25,7 @@ const char *digits[11][5] = {
   {
     " ### ",
     "#   #",
-    "   # ",
+    "  ## ",
     "#   #",
     " ### "},
   {
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   // init some vars
   // time.h vars
   char buff_full[80]; // NEVER name the character buffer "time" -- been there before
-  char buff_time[10]
+  char buff_time[10];
   time_t rawtime;
   struct tm *fmttime;
 
@@ -96,9 +96,6 @@ int main(int argc, char *argv[]) {
   
   ch = getch();
   while (ch == ERR) {
-    // format and print time
-    strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
-   
     maxlines = LINES - 1;
     maxcols = COLS - 1;
 
@@ -106,15 +103,16 @@ int main(int argc, char *argv[]) {
       mvaddstr(1, 1, "terminal is too small!");
       mvaddstr(1, 2, "must be at least 20x20");
     } else {
-      for (int i = 0; i < sizeof(buff_time), i++) {
-        if (scanf("%d", &buff_time[i]) == 1) {
-          const char **digit = digits[buff_time[i]];
-        } else {
-          const char **digit = digits[10];
-        }
+      time(&rawtime);
+      fmttime = localtime(&rawtime);
+      strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
+
+      for (int i = 0; buff_time[i]; i++) {
+        int d = (buff_time[i] >= '0' && buff_time[i] <= '9') ? buff_time[i] - '0' : 10;
+        const char **digit = digits[d];
 
         for (int j = 0; j < 5; j++) {
-          mvaddstr(i * 5 + i + 1, 1, digit[j];
+          mvaddstr(j + 1, i * 6 + 1, digit[j]);
         }
       }
     }
@@ -123,6 +121,8 @@ int main(int argc, char *argv[]) {
 
     ch = getch();
   }
+
+  endwin();
 
   return 0;
 }
