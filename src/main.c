@@ -102,15 +102,15 @@ int main(int argc, char *argv[]) {
     maxlines = LINES - 1;
     maxcols = COLS - 1;
     
+    time(&rawtime);
+    fmttime = localtime(&rawtime);
+    strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
+
     if (strcmp(buff_time, time_last) != 0) {
       if (maxcols < 20 || maxlines < 20) {
         mvaddstr(1, 1, "terminal is too small!");
         mvaddstr(1, 2, "must be at least 20x20");
       } else {
-        time(&rawtime);
-        fmttime = localtime(&rawtime);
-        strftime(buff_time, sizeof(buff_time), "%I:%M:%S", fmttime);
-
         for (int i = 0; buff_time[i]; i++) {
           int d = (buff_time[i] >= '0' && buff_time[i] <= '9') ? buff_time[i] - '0' : 10;
           const char **digit = digits[d];
@@ -126,6 +126,7 @@ int main(int argc, char *argv[]) {
     }
 
     ch = getch();
+    napms(50);
   }
 
   endwin();
