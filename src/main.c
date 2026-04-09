@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <time.h>
 #include <curses.h>
+#include "main.h"
 
 int main(int argc, char *argv[]) {
   // had to try out argc and argv

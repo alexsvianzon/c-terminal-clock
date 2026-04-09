@@ -1,4 +1,4 @@
-// digits.c
+// main.h
 // maybe change digits 6 and 9 as well as :
 
 const char *digits[11][5] = {
